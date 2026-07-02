@@ -2,7 +2,8 @@
 
 An OctoPrint plugin for smart filament inventory, print cost tracking, and spool management.
 
-<img width="500" height="500" alt="SpoolWizard Logo" src="https://github.com/user-attachments/assets/1768edba-f762-49aa-bd17-b33848579bcc" />
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/d989afd4-0c62-465c-ac64-fa468cc98599" />
+
 
 ## Planned Features
 - Filament inventory
