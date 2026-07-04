@@ -2,6 +2,8 @@ $(function() {
 
     function SpoolwizardViewModel(parameters) {
         var self = this;
+        
+        self.spools = [];
 
         self.onAfterBinding = function() {
             $("#save-spool").click(function() {
@@ -11,14 +13,24 @@ $(function() {
                 var totalWeight = $("#total_weight").val();
                 var remainingWeight = $("#remaining_weight").val();
                 
-                alert(
-                    "Brand: " + brand +
-                    "\nMaterial: " + material +
-                    "\nColor: " + color +
-                    "\n Total Weight: " + totalWeight +
-                    "g\nRemaining Weight: " + remainingWeight + "g"
-                )
+                var spool = {                
+                    brand: brand,
+                    material: material,
+                    color: color,
+                    totalWeight: totalWeight,
+                    remainingWeight: remainingWeight                
+                };
+                
+                self.spools.push(spool);
+                self.updateInventory();
+                
+                console.log(self.spools);
             });
+        };
+        
+        self.updateInventory = function() {
+            console.log("Inventory:");
+            console.log(self.spools);
         };
     }
 
