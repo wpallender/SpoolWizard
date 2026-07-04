@@ -1,0 +1,2 @@
+[octoprint.plugin]
+spoolwizard = octoprint_spoolwizard

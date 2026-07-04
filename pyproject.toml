@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "SpoolWizard"
+version = "0.1.0"
+description = "A modern filament management plugin for OctoPrint featuring inventory, spool tracking, cost calculations, and smart spoopport"
+authors = [
+    {name = "Will A", email = "wpallender@icloud.com"}
+]
+readme = {file = "README.md", content-type = "text/markdown"}
+dynamic = [
+    "license"
+]
+
+requires-python = ">=3.7, <4"
+
+# any additional requirements (besides OctoPrint) should be listed here
+dependencies = []
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "octoprint_spoolwizard",
+    "octoprint_spoolwizard.*"
+]
+
+[project.entry-points."octoprint.plugin"]
+spoolwizard = "octoprint_spoolwizard"
+
+[project.urls]
+Homepage = "https://github.com/wpallender/SpoolWizard"
+
+[project.optional-dependencies]
+develop = [
+    "go-task-bin"
+]

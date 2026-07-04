@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_spoolwizard/templates *
+recursive-include octoprint_spoolwizard/translations *
+recursive-include octoprint_spoolwizard/static *

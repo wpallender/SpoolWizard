@@ -1,0 +1,15 @@
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+SpoolWizard.egg-info/PKG-INFO
+SpoolWizard.egg-info/SOURCES.txt
+SpoolWizard.egg-info/dependency_links.txt
+SpoolWizard.egg-info/entry_points.txt
+SpoolWizard.egg-info/requires.txt
+SpoolWizard.egg-info/top_level.txt
+octoprint_spoolwizard/__init__.py
+octoprint_spoolwizard/static/css/spoolwizard.css
+octoprint_spoolwizard/static/js/spoolwizard.js
+octoprint_spoolwizard/static/less/spoolwizard.less
+octoprint_spoolwizard/templates/README.txt

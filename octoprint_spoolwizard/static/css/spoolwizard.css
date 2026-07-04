@@ -1,0 +1,32 @@
+.spoolwizard-sidebar {
+	padding: 10px;
+}
+
+.spoolwizard-sidebar h3 {
+	margin-top: 0;
+	font-weight: 600;
+}
+
+.spool-card {
+	background: #2b2b2b;
+	border-radius: 8px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.spool-card strong {
+	font-size: 14px;
+}
+
+.spool-card small {
+	color: #b5b5b5;
+}
+
+.spool-card span {
+	color: #78d46a;
+	font-weight: bold;
+}
+
+.spoolwizard-sidebar button {
+	width: 100%;
+}
