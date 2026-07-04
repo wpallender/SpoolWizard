@@ -13,7 +13,8 @@ $(function() {
                 var totalWeight = $("#total_weight").val();
                 var remainingWeight = $("#remaining_weight").val();
                 
-                var spool = {                
+                var spool = {   
+                    id: Date.now(),
                     brand: brand,
                     material: material,
                     color: color,
@@ -22,6 +23,13 @@ $(function() {
                 };
                 
                 self.spools.push(spool);
+
+                OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
+                    spools: self.spools
+                }).done(function(response) {
+                    console.log("Inventory saved!", response);
+                });
+
                 self.updateInventory();
                 
                 $("#brand").val("");
