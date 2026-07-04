@@ -1,19 +1,21 @@
 # SpoolWizard TODO
 
 ## v0.1.0
-- [ ] Add spool form
-- [ ] Save spool data
-- [ ] Display spool inventory
+- [D] Add spool form
+- [D] Save spool data
+- [D] Display spool inventory
 - [ ] Select active spool
-- [ ] Edit spool
-- [ ] Delete spool
+- [D] Edit spool
+- [D] Delete spool
 
 ## v1.0.0
 - [ ] Manual filament tracking
 - [ ] Print history
+- [ ] Statistics
 - [ ] Settings
 
 ## v2.0.0
+- [ ] Camera support
 - [ ] QR code support
 
 ## v3.0.0
@@ -21,3 +23,6 @@
 
 ## v4.0.0
 - [ ] NFC support
+
+## v5.0.0
+- [ ] AI Print Detection
