@@ -6,6 +6,8 @@ $(function() {
         self.spools = [];
 
         self.onAfterBinding = function() {
+            console.log("onAfterBinding called");
+            
             $("#save-spool").click(function() {
                 var brand = $("#brand").val();
                 var material = $("#material").val();
@@ -20,11 +22,11 @@ $(function() {
                     color: color,
                     totalWeight: totalWeight,
                     remainingWeight: remainingWeight                
-                };
+            };
                 
-                self.spools.push(spool);
+            self.spools.push(spool);
 
-                OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
+            OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
                     spools: self.spools
                 }).done(function(response) {
                     console.log("Inventory saved!", response);
@@ -40,6 +42,8 @@ $(function() {
                 
                 console.log(self.spools);
             });
+            
+            self.loadInventory();
         };
         
         self.updateInventory = function() {
@@ -65,6 +69,21 @@ $(function() {
 
             });
 
+        };
+        
+        self.loadInventory = function() {
+            console.log("Loading inventory...");
+
+            OctoPrint.simpleApiGet("spoolwizard")
+                .done(function(response) {
+                    console.log("Loaded:", response);
+
+                    self.spools = response.spools || [];
+                    self.updateInventory();
+                })
+                .fail(function(error) {
+                    console.log("Failed to load inventory:", error);
+                });
         };
     }
 

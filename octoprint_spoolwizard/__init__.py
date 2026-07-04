@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from flask import jsonify
 
 import octoprint.plugin
 
@@ -26,6 +27,11 @@ class SpoolwizardPlugin(
             "css": ["css/spoolwizard.css"],
             "less": ["less/spoolwizard.less"]
         }
+    
+    def on_api_get(self, request):
+        return jsonify(
+            spools=self._settings.get(["spools"])
+        )
     
     def get_api_commands(self):
         return {
@@ -55,7 +61,7 @@ class SpoolwizardPlugin(
             }
         }
 
-__plugin_name__ = "Spoolwizard Plugin"
+__plugin_name__ = "SpoolWizard (0.1.0)"
 
 __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 
