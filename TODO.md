@@ -4,7 +4,7 @@
 - [D] Add spool form
 - [D] Save spool data
 - [D] Display spool inventory
-- [ ] Select active spool
+- [D] Select active spool
 - [D] Edit spool
 - [D] Delete spool
 
