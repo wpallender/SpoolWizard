@@ -1,29 +1,31 @@
-/*
- * View model for SpoolWizard
- *
- * Author: Will A
- * License: AGPL-3.0-or-later
- */
 $(function() {
+
     function SpoolwizardViewModel(parameters) {
         var self = this;
 
-        // assign the injected parameters, e.g.:
-        // self.loginStateViewModel = parameters[0];
-        // self.settingsViewModel = parameters[1];
-
-        // TODO: Implement your plugin's view model here.
+        self.onAfterBinding = function() {
+            $("#save-spool").click(function() {
+                var brand = $("#brand").val();
+                var material = $("#material").val();
+                var color = $("#color").val();
+                var totalWeight = $("#total_weight").val();
+                var remainingWeight = $("#remaining_weight").val();
+                
+                alert(
+                    "Brand: " + brand +
+                    "\nMaterial: " + material +
+                    "\nColor: " + color +
+                    "\n Total Weight: " + totalWeight +
+                    "g\nRemaining Weight: " + remainingWeight + "g"
+                )
+            });
+        };
     }
 
-    /* view model class, parameters for constructor, container to bind to
-     * Please see http://docs.octoprint.org/en/main/plugins/viewmodels.html#registering-custom-viewmodels for more details
-     * and a full list of the available options.
-     */
     OCTOPRINT_VIEWMODELS.push({
         construct: SpoolwizardViewModel,
-        // ViewModels your plugin depends on, e.g. loginStateViewModel, settingsViewModel, ...
-        dependencies: [ /* "loginStateViewModel", "settingsViewModel" */ ],
-        // Elements to bind to, e.g. #settings_plugin_spoolwizard, #tab_plugin_spoolwizard, ...
-        elements: [ /* ... */ ]
+        dependencies: [],
+        elements: ["#tab_plugin_spoolwizard"]
     });
+
 });
