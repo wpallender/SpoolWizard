@@ -24,13 +24,39 @@ $(function() {
                 self.spools.push(spool);
                 self.updateInventory();
                 
+                $("#brand").val("");
+                $("#material").val("");
+                $("#color").val("");
+                $("#total_weight").val("");
+                $("#remaining_weight").val("");
+                
                 console.log(self.spools);
             });
         };
         
         self.updateInventory = function() {
-            console.log("Inventory:");
-            console.log(self.spools);
+
+            var table = $("#inventory-body");
+
+            table.empty();
+
+            self.spools.forEach(function(spool) {
+
+                table.append(
+                    "<tr>" +
+                        "<td>" +
+                        spool.brand + " " +
+                        spool.material + " " +
+                        spool.color +
+                        "</td>" +
+                        "<td>" +
+                        spool.remainingWeight + " g" +
+                        "</td>" +
+                    "</tr>"
+                );
+
+            });
+
         };
     }
 
