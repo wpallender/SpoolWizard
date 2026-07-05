@@ -11,6 +11,85 @@ $(function () {
 
             // Load inventory
             self.loadInventory();
+            
+            //View History
+            $("#inventory-body").on("click", ".view-history", function (e) {
+                e.preventDefault();
+
+                var id = Number($(this).data("id"));
+                self.showHistory(id);
+            });
+            
+            //Adjust Spool Weight
+            $("#adjust").click(function () {
+                if (self.activeSpoolId === null) {
+                    alert("Select an active spool first.");
+                    return;
+                }
+
+                var amount = Number($("#adjust-weight").val());
+                var type = $("#adjust-type").val();
+
+                if (isNaN(amount) || amount <= 0) {
+                    alert("Enter a valid weight.");
+                    return;
+                }
+
+                var spool = self.spools.find(function (s) {
+                    return s.id === self.activeSpoolId;
+                });
+
+                if (!spool) {
+                    return;
+                }
+
+                if (type === "subtract") {
+                    if (amount > spool.remainingWeight) {
+                        alert("Not enough filament remaining.");
+                        return;
+                    }
+
+                    spool.remainingWeight -= amount;
+                } else {
+                    if (spool.remainingWeight + amount > spool.totalWeight) {
+                        alert("Cannot exceed the spool's total weight.");
+                        return;
+                    }
+
+                    spool.remainingWeight += amount;
+                }
+
+                spool.history = spool.history || [];
+
+                spool.history.push({
+                    timestamp: Date.now(),
+                    date: new Date().toISOString(),
+                    type: type,
+                    amount: amount,
+                    remaining: spool.remainingWeight
+                });
+
+                self.updateInventory();
+                self.updateActiveSpool();
+
+                $("#adjust").prop("disabled", true);
+
+                OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
+                    spools: self.spools
+                })
+                .done(function () {
+                    console.log("Weight updated.");
+                })
+                .fail(function () {
+                    alert("Unable to save spool changes.");
+                })
+                .always(function () {
+                    $("#adjust").prop("disabled", false);
+                });
+
+                $("#adjust-weight").val("");
+                $("#adjust-type").val("subtract");
+            });
 
             // Save / Update spool
             $("#save-spool").click(function () {
@@ -57,15 +136,20 @@ $(function () {
                     return;
                 }
 
+                var existingSpool = self.spools.find(function (s) {
+                    return s.id === self.editingId;
+                });
+
                 var spool = {
                     id: self.editingId || Date.now(),
                     brand: brand,
                     material: material,
                     color: color,
                     totalWeight: totalWeight,
-                    remainingWeight: remainingWeight
+                    remainingWeight: remainingWeight,
+                    history: existingSpool && existingSpool.history ? existingSpool.history : []
                 };
-
+                
                 if (self.editingId !== null) {
                     var index = self.spools.findIndex(function (s) {
                         return s.id === self.editingId;
@@ -163,6 +247,9 @@ $(function () {
 
                 if (self.activeSpoolId === id) {
                     self.activeSpoolId = null;
+                    
+                    $("#adjust-weight").val("");
+                    $("#adjust-type").val("subtract");
 
                     OctoPrint.simpleApiCommand("spoolwizard", "saveActiveSpool", {
                         activeSpoolId: null
@@ -225,8 +312,10 @@ $(function () {
                 table.append(
                     "<tr>" +
                         "<td>" +
-                            "<strong>" + spool.brand + "</strong><br>" +
-                            "<small>" + spool.material + " • " + spool.color + "</small>" +
+                            "<a href='#' class='view-history' data-id='" + spool.id + "'>" +
+                                "<strong>" + spool.brand + "</strong><br>" +
+                                "<small>" + spool.material + " • " + spool.color + "</small>" +
+                            "</a>" +
                         "</td>" +
 
                         "<td>" +
@@ -298,6 +387,69 @@ $(function () {
                 percent +
                 "% remaining)"
             );
+        };
+        
+        self.showHistory = function (id) {
+
+            var spool = self.spools.find(function (s) {
+                return s.id === id;
+            });
+
+            if (!spool) {
+                return;
+            }
+            
+            $("#history-title").text(
+                "History — " +
+                spool.brand + " " +
+                spool.material + " " +
+                spool.color
+            );
+
+            var html = "";
+
+            if (!spool.history || spool.history.length === 0) {
+
+                html = "<p>No adjustments have been recorded.</p>";
+
+            } else {
+
+                html = "<table class='table table-striped'>";
+                html += "<thead>";
+                html += "<tr>";
+                html += "<th>Date</th>";
+                html += "<th>Change</th>";
+                html += "<th>Remaining</th>";
+                html += "</tr>";
+                html += "</thead><tbody>";
+
+                spool.history.slice().reverse().forEach(function (entry) {
+
+                    var color = entry.type === "add"
+                        ? "green"
+                        : "red";
+
+                    var sign = entry.type === "add"
+                        ? "+"
+                        : "-";
+
+                    html +=
+                        "<tr>" +
+                        "<td>" + new Date(entry.date).toLocaleString() + "</td>" +
+                        "<td style='color:" + color + ";font-weight:bold;'>" +
+                        sign + entry.amount + " g" +
+                        "</td>" +
+                        "<td>" + entry.remaining + " g</td>" +
+                        "</tr>";
+
+                });
+
+                html += "</tbody></table>";
+            }
+
+            $("#history-content").html(html);
+
+            $("#history-modal").modal("show");
         };
     }
 
