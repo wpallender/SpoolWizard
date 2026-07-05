@@ -1,131 +1,144 @@
 # Roadmap
 
-## v0.1.0 Initial Pre-release
+## v0.1.0 — Initial Pre-release
+**Status:** Completed
 
-- ✅ Add spool form
-- ✅ Save spool data
-- ✅ Display spool inventory
-- ✅ Select active spool
-- ✅ Edit spool
-- ✅ Delete spool
-
----
-
-## v0.1.1
-
-- ✅ Fix bugs found after release
-- ✅ Improve UI layout
-- ✅ Add input validation
-- ✅ Add empty inventory message
-- ✅ Improve error handling
+- Add spool form
+- Save spool data
+- Display spool inventory
+- Select active spool
+- Edit spool
+- Delete spool
 
 ---
 
-## v0.2.0
+## v0.2.0 — Filament Management
+**Status:** Completed
 
-- Manual filament usage tracking
 - Adjust remaining weight
+- Manual filament usage tracking
 - Prevent negative filament amounts
+- Prevent remaining weight from exceeding total weight
 - Weight history log
+- Display spool percentage remaining
 
 ---
 
-## v0.3.0
+## v0.3.0 — Print Tracking
 
 - Print history
 - Record filament used per print
 - Track print success/failure
-- View history for each spool
+- View print history for each spool
+- Show estimated filament remaining after print
+- Print duration tracking
 
 ---
 
-## v0.4.0
+## v0.4.0 — Statistics & Analytics
 
 - Statistics dashboard
 - Total filament used
 - Total print time
 - Most-used spool
 - Material usage charts
+- Cost tracking
+- Average filament used per print
+- Print success rate
 
 ---
 
-## v0.5.0
+## v0.5.0 — Settings & Data Management
 
-- Plugin settings
-- Low filament warning
+- Plugin settings page
+- Low filament warning threshold
 - Default spool weight
-- Backup/restore inventory
-- Import/export inventory
+- Backup inventory
+- Restore inventory
+- Import inventory
+- Export inventory
+- Reset inventory option
 
 ---
 
-## v0.6.0
+## v0.6.0 — Inventory Improvements
 
 - Search inventory
-- Sort and filter
+- Sort inventory
+- Filter by material
+- Filter by color
 - Favorite spools
+- Remaining filament progress bars
 - Better mobile layout
 
 ---
 
-## v0.7.0
+## v0.7.0 — Automation
 
-- Automatic filament tracking
+- Automatic filament tracking after prints
 - Handle cancelled prints
+- Handle failed prints
 - Manual correction wizard
+- Filament usage notifications
+- Low filament warnings
 
 ---
 
-## v0.8.0
+## v0.8.0 — Multi-Printer Support
 
 - Multi-printer support
 - Printer-specific active spool
 - Shared inventory
+- Printer profiles
 
 ---
 
-## v0.9.0
+## v0.9.0 — Release Candidate
 
 - Final UI polish
 - Performance improvements
-- Documentation
+- Complete documentation
 - Screenshots
-- Testing
-- Bug fixes
+- Accessibility improvements
+- Extensive testing
+- Fix remaining bugs
 
 ---
 
-## v1.0.0
+## v1.0.0 — Stable Release
 
-- Stable release
-- Plugin Manager submission
+- Stable public release
+- Submit to the OctoPrint Plugin Manager
 - Complete documentation
 - User guide
 - Changelog
+- Version migration testing
 
 ---
 
-## v2.0.0
+## v2.0.0 — QR Code Support
 
 - Camera support
-- QR code support
+- Automatic spool recognition
+- Generate QR codes for spools
+- Printable spool labels
+- Scan QR code to activate a spool
+- Scan QR code to view spool details
 
 ---
 
-## v3.0.0
-
-- RFID support
-
----
-
-## v4.0.0
-
-- NFC support
-
----
-
-## v5.0.0
+## v3.0.0 — AI Features
 
 - AI print failure detection
-- Automatic spool recognition
 - AI filament usage estimation
+- Predict low-filament events
+- Automatic spool recommendations
+
+---
+
+## Potential Future Updates
+
+- RFID support
+- RFID reader configuration
+- NFC support
+- NFC tag management

@@ -74,7 +74,7 @@ class SpoolwizardPlugin(
             }
         }
 
-__plugin_name__ = "SpoolWizard (0.1.0)"
+__plugin_name__ = "SpoolWizard (0.3.0)"
 
 __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 
