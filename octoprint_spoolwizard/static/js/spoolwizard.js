@@ -14,19 +14,46 @@ $(function () {
 
             // Save / Update spool
             $("#save-spool").click(function () {
+
                 var brand = $("#brand").val().trim();
                 var material = $("#material").val().trim();
                 var color = $("#color").val().trim();
-                var totalWeight = $("#total_weight").val();
-                var remainingWeight = $("#remaining_weight").val();
+                var totalWeight = Number($("#total_weight").val());
+                var remainingWeight = Number($("#remaining_weight").val());
 
-                // Validation
-                if (!brand || !material || !color || !totalWeight || !remainingWeight) {
-                    new PNotify({
-                        title: "Missing information",
-                        text: "Please fill out all fields.",
-                        type: "error"
-                    });
+                if (!brand) {
+                    alert("Please enter a brand.");
+                    $("#brand").focus();
+                    return;
+                }
+
+                if (!material) {
+                    alert("Please enter a material.");
+                    $("#material").focus();
+                    return;
+                }
+
+                if (!color) {
+                    alert("Please enter a color.");
+                    $("#color").focus();
+                    return;
+                }
+
+                if (isNaN(totalWeight) || totalWeight <= 0) {
+                    alert("Total weight must be greater than 0 grams.");
+                    $("#total_weight").focus();
+                    return;
+                }
+
+                if (isNaN(remainingWeight) || remainingWeight < 0) {
+                    alert("Remaining weight cannot be negative.");
+                    $("#remaining_weight").focus();
+                    return;
+                }
+
+                if (remainingWeight > totalWeight) {
+                    alert("Remaining weight cannot be greater than the total weight.");
+                    $("#remaining_weight").focus();
                     return;
                 }
 
@@ -35,8 +62,8 @@ $(function () {
                     brand: brand,
                     material: material,
                     color: color,
-                    totalWeight: Number(totalWeight),
-                    remainingWeight: Number(remainingWeight)
+                    totalWeight: totalWeight,
+                    remainingWeight: remainingWeight
                 };
 
                 if (self.editingId !== null) {
@@ -63,13 +90,13 @@ $(function () {
 
                 OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
                     spools: self.spools
-                }).done(function () {
-                    new PNotify({
-                        title: "Saved",
-                        text: "Spool inventory updated.",
-                        type: "success",
-                        delay: 1500
-                    });
+                })
+                .done(function () {
+                    console.log("Inventory saved!");
+                })
+                .fail(function (xhr) {
+                    console.error("Failed to save inventory:", xhr);
+                    alert("Unable to save the inventory. Please try again.");
                 });
 
                 // Clear form
@@ -89,6 +116,12 @@ $(function () {
 
                 OctoPrint.simpleApiCommand("spoolwizard", "saveActiveSpool", {
                     activeSpoolId: self.activeSpoolId
+                })
+                .done(function () {
+                    console.log("Active spool saved.");
+                })
+                .fail(function () {
+                    alert("Unable to save the active spool.");
                 });
             });
 
@@ -139,9 +172,20 @@ $(function () {
                 }
 
                 self.updateInventory();
+                
+                $("#save-spool").prop("disabled", true);
 
                 OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
                     spools: self.spools
+                })
+                .done(function () {
+                    console.log("Inventory saved after delete!");
+                })
+                .fail(function () {
+                    alert("Unable to delete spool.");
+                })
+                .always(function () {
+                    $("#save-spool").prop("disabled", false);
                 });
             });
         };
@@ -158,13 +202,13 @@ $(function () {
             }
 
             // Active spool first, then alphabetical
-            self.spools.sort(function (a, b) {
+            var sortedSpools = self.spools.slice().sort(function (a, b) {
                 if (a.id === self.activeSpoolId) return -1;
                 if (b.id === self.activeSpoolId) return 1;
                 return a.brand.localeCompare(b.brand);
             });
 
-            self.spools.forEach(function (spool) {
+            sortedSpools.forEach(function (spool) {
 
                 var useButton;
 
@@ -204,16 +248,24 @@ $(function () {
         };
 
         self.loadInventory = function () {
+            console.log("Loading inventory...");
+
             OctoPrint.simpleApiGet("spoolwizard")
                 .done(function (response) {
                     self.spools = response.spools || [];
-                    self.activeSpoolId = response.activeSpoolId;
+                    self.activeSpoolId = response.activeSpoolId || null;
 
                     self.updateInventory();
                     self.updateActiveSpool();
                 })
-                .fail(function (error) {
-                    console.log("Failed to load inventory:", error);
+                .fail(function (xhr) {
+                    console.error("Load failed:", xhr);
+
+                    $("#inventory-body").html(
+                        "<tr><td colspan='3' style='text-align:center;color:#d9534f;'>" +
+                        "Failed to load inventory." +
+                        "</td></tr>"
+                    );
                 });
         };
 

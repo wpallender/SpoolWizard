@@ -10,9 +10,9 @@
 
 ## v0.1.1
 - [ ] Fix bugs found after release
-- [ ] Improve UI layout
-- [ ] Add input validation
-- [ ] Add empty inventory message
+- [x] Improve UI layout
+- [x] Add input validation
+- [x] Add empty inventory message
 - [ ] Improve error handling
 
 ## v0.2.0

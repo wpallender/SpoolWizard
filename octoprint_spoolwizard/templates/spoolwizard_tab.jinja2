@@ -19,19 +19,19 @@
         <h3>Add New Spool</h3>
 
         <label>Brand</label><br>
-        <input type="text" id="brand"><br><br>
+        <input type="text" id="brand" maxlength="30" required><br><br>
 
         <label>Material</label><br>
-        <input type="text" id="material"><br><br>
+        <input type="text" id="material" maxlength="30" required><br><br>
 
         <label>Color</label><br>
-        <input type="text" id="color"><br><br>
+        <input type="text" id="color" maxlength="30" required><br><br>
 
         <label>Total Weight (g)</label><br>
-        <input type="number" id="total_weight"><br><br>
+        <input type="number" id="total_weight" min="1" step="1" required><br><br>
 
         <label>Remaining Weight (g)</label><br>
-        <input type="number" id="remaining_weight"><br><br>
+        <input type="number" id="remaining_weight" min="1" step="1" required><br><br>
 
         <button id="save-spool" class="btn btn-primary">
             Save Spool
