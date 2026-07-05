@@ -9,11 +9,11 @@
 - [x] Delete spool
 
 ## v0.1.1
-- [ ] Fix bugs found after release
+- [x] Fix bugs found after release
 - [x] Improve UI layout
 - [x] Add input validation
 - [x] Add empty inventory message
-- [ ] Improve error handling
+- [x] Improve error handling
 
 ## v0.2.0
 - [ ] Manual filament usage tracking
