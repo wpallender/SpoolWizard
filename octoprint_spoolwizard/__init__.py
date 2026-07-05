@@ -3,6 +3,9 @@ from flask import jsonify
 
 import octoprint.plugin
 
+__version__ = "0.2.1"
+# Remember to update changelog.md
+
 class SpoolwizardPlugin(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
@@ -74,7 +77,7 @@ class SpoolwizardPlugin(
             }
         }
 
-__plugin_name__ = "SpoolWizard (0.3.0)"
+__plugin_name__ = "SpoolWizard (" + __version__ + ")"
 
 __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 

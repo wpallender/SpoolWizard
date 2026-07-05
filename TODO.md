@@ -17,7 +17,7 @@
 - [x] Improve documentation
 
 ### v0.1.x
-- [ ] Additional bug fixes and maintenance (as needed)
+- [x] Additional bug fixes and maintenance (as needed)
 
 ---
 
@@ -33,6 +33,7 @@
 - [ ] Bug fixes
 - [ ] UI improvements
 - [ ] Performance improvements
+- [ ] Enable Jinja2 template autoescaping (OctoPrint 1.13 compatibility)
 
 ---
 

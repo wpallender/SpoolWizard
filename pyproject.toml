@@ -4,14 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SpoolWizard"
-version = "0.1.0"
-description = "A modern filament management plugin for OctoPrint featuring inventory, spool tracking, cost calculations, and smart spoopport"
+description = "A modern filament management plugin for OctoPrint featuring inventory, spool tracking, cost calculations, and smart spool support"
 authors = [
     {name = "Will A", email = "wpallender@icloud.com"}
 ]
 readme = {file = "README.md", content-type = "text/markdown"}
 dynamic = [
-    "license"
+    "license", "version"
 ]
 
 requires-python = ">=3.7, <4"
@@ -27,6 +26,9 @@ include = [
     "octoprint_spoolwizard",
     "octoprint_spoolwizard.*"
 ]
+
+[tool.setuptools.dynamic]
+version = {attr = "octoprint_spoolwizard.__version__"}
 
 [project.entry-points."octoprint.plugin"]
 spoolwizard = "octoprint_spoolwizard"

@@ -2,6 +2,19 @@
 
 All notable changes to SpoolWizard will be documented in this file.
 
+---
+
+## [0.2.1] - 2026-07-05
+
+### Improved
+- Speed and performance
+
+### Fixed
+- Various bugs
+- Documents
+
+---
+
 ## [0.2.0] - 2026-07-05
 
 ### Added
