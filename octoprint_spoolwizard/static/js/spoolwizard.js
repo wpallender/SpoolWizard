@@ -1,7 +1,5 @@
 $(function () {
-
     function SpoolwizardViewModel(parameters) {
-
         var self = this;
 
         self.spools = [];
@@ -9,32 +7,39 @@ $(function () {
         self.editingId = null;
 
         self.onAfterBinding = function () {
-
             console.log("onAfterBinding called");
 
-            // Load inventory when page opens
+            // Load inventory
             self.loadInventory();
 
             // Save / Update spool
             $("#save-spool").click(function () {
-
-                var brand = $("#brand").val();
-                var material = $("#material").val();
-                var color = $("#color").val();
+                var brand = $("#brand").val().trim();
+                var material = $("#material").val().trim();
+                var color = $("#color").val().trim();
                 var totalWeight = $("#total_weight").val();
                 var remainingWeight = $("#remaining_weight").val();
+
+                // Validation
+                if (!brand || !material || !color || !totalWeight || !remainingWeight) {
+                    new PNotify({
+                        title: "Missing information",
+                        text: "Please fill out all fields.",
+                        type: "error"
+                    });
+                    return;
+                }
 
                 var spool = {
                     id: self.editingId || Date.now(),
                     brand: brand,
                     material: material,
                     color: color,
-                    totalWeight: totalWeight,
-                    remainingWeight: remainingWeight
+                    totalWeight: Number(totalWeight),
+                    remainingWeight: Number(remainingWeight)
                 };
 
                 if (self.editingId !== null) {
-
                     var index = self.spools.findIndex(function (s) {
                         return s.id === self.editingId;
                     });
@@ -44,12 +49,13 @@ $(function () {
                     }
 
                     self.editingId = null;
-                    $("#save-spool").text("Save Spool");
 
+                    $("#save-spool")
+                        .text("Save Spool")
+                        .removeClass("btn-warning")
+                        .addClass("btn-primary");
                 } else {
-
                     self.spools.push(spool);
-
                 }
 
                 self.updateInventory();
@@ -58,7 +64,12 @@ $(function () {
                 OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
                     spools: self.spools
                 }).done(function () {
-                    console.log("Inventory saved!");
+                    new PNotify({
+                        title: "Saved",
+                        text: "Spool inventory updated.",
+                        type: "success",
+                        delay: 1500
+                    });
                 });
 
                 // Clear form
@@ -67,12 +78,10 @@ $(function () {
                 $("#color").val("");
                 $("#total_weight").val("");
                 $("#remaining_weight").val("");
-
             });
 
-            // Use spool
+            // Set active spool
             $("#inventory-body").on("click", ".use-spool", function () {
-
                 self.activeSpoolId = Number($(this).data("id"));
 
                 self.updateInventory();
@@ -81,12 +90,10 @@ $(function () {
                 OctoPrint.simpleApiCommand("spoolwizard", "saveActiveSpool", {
                     activeSpoolId: self.activeSpoolId
                 });
-
             });
 
             // Edit spool
             $("#inventory-body").on("click", ".edit-spool", function () {
-
                 var id = Number($(this).data("id"));
 
                 var spool = self.spools.find(function (s) {
@@ -103,16 +110,17 @@ $(function () {
 
                 self.editingId = id;
 
-                $("#save-spool").text("Update Spool");
-
+                $("#save-spool")
+                    .text("Update Spool")
+                    .removeClass("btn-primary")
+                    .addClass("btn-warning");
             });
 
             // Delete spool
             $("#inventory-body").on("click", ".delete-spool", function () {
-
                 var id = Number($(this).data("id"));
 
-                if (!confirm("Are you sure you want to delete this spool?")) {
+                if (!confirm("Delete this spool?")) {
                     return;
                 }
 
@@ -122,29 +130,39 @@ $(function () {
 
                 if (self.activeSpoolId === id) {
                     self.activeSpoolId = null;
-                    self.updateActiveSpool();
 
                     OctoPrint.simpleApiCommand("spoolwizard", "saveActiveSpool", {
                         activeSpoolId: null
                     });
+
+                    self.updateActiveSpool();
                 }
 
                 self.updateInventory();
 
                 OctoPrint.simpleApiCommand("spoolwizard", "saveSpools", {
                     spools: self.spools
-                }).done(function () {
-                    console.log("Inventory saved after delete!");
                 });
-
             });
-
         };
 
         self.updateInventory = function () {
-
             var table = $("#inventory-body");
             table.empty();
+
+            if (self.spools.length === 0) {
+                table.html(
+                    "<tr><td colspan='3' style='text-align:center;color:#888;'>No spools in inventory.</td></tr>"
+                );
+                return;
+            }
+
+            // Active spool first, then alphabetical
+            self.spools.sort(function (a, b) {
+                if (a.id === self.activeSpoolId) return -1;
+                if (b.id === self.activeSpoolId) return 1;
+                return a.brand.localeCompare(b.brand);
+            });
 
             self.spools.forEach(function (spool) {
 
@@ -156,16 +174,25 @@ $(function () {
                     useButton = "<button class='use-spool btn btn-success' data-id='" + spool.id + "'>Use</button>";
                 }
 
+                var percent = Math.round(
+                    (spool.remainingWeight / spool.totalWeight) * 100
+                );
+
                 table.append(
                     "<tr>" +
                         "<td>" +
-                            spool.brand + " " +
-                            spool.material + " " +
-                            spool.color +
+                            "<strong>" + spool.brand + "</strong><br>" +
+                            "<small>" + spool.material + " • " + spool.color + "</small>" +
                         "</td>" +
+
                         "<td>" +
-                            spool.remainingWeight + " g" +
+                            spool.remainingWeight +
+                            " g / " +
+                            spool.totalWeight +
+                            " g<br>" +
+                            "<small>" + percent + "% remaining</small>" +
                         "</td>" +
+
                         "<td>" +
                             useButton + " " +
                             "<button class='edit-spool btn btn-warning' data-id='" + spool.id + "'>Edit</button> " +
@@ -173,37 +200,24 @@ $(function () {
                         "</td>" +
                     "</tr>"
                 );
-
             });
-
         };
 
         self.loadInventory = function () {
-
-            console.log("Loading inventory...");
-
             OctoPrint.simpleApiGet("spoolwizard")
                 .done(function (response) {
-
-                    console.log("Loaded:", response);
-
                     self.spools = response.spools || [];
                     self.activeSpoolId = response.activeSpoolId;
 
                     self.updateInventory();
                     self.updateActiveSpool();
-
                 })
                 .fail(function (error) {
-
                     console.log("Failed to load inventory:", error);
-
                 });
-
         };
 
         self.updateActiveSpool = function () {
-
             var spool = self.spools.find(function (s) {
                 return s.id === self.activeSpoolId;
             });
@@ -214,6 +228,10 @@ $(function () {
                 return;
             }
 
+            var percent = Math.round(
+                (spool.remainingWeight / spool.totalWeight) * 100
+            );
+
             $("#active-name").text(
                 spool.brand + " " +
                 spool.material + " " +
@@ -221,11 +239,14 @@ $(function () {
             );
 
             $("#active-weight").text(
-                spool.remainingWeight + " g Remaining"
+                spool.remainingWeight +
+                " g / " +
+                spool.totalWeight +
+                " g (" +
+                percent +
+                "% remaining)"
             );
-
         };
-
     }
 
     OCTOPRINT_VIEWMODELS.push({
@@ -233,5 +254,4 @@ $(function () {
         dependencies: [],
         elements: ["#tab_plugin_spoolwizard"]
     });
-
 });

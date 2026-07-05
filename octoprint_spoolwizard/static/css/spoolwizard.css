@@ -1,32 +1,63 @@
-.spoolwizard-sidebar {
-	padding: 10px;
+.tab_plugin_spoolwizard {
+    padding: 10px;
 }
 
-.spoolwizard-sidebar h3 {
-	margin-top: 0;
-	font-weight: 600;
+.tab_plugin_spoolwizard h3 {
+    margin-top: 0;
+    font-weight: 600;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+    border-top: none;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.inventory-table {
+    background: #ffffff;
+    border: 1px solid #444;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.table .btn {
+    margin-right: 4px;
+}
+
+.remaining {
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.actions {
+    white-space: nowrap;
 }
 
 .spool-card {
-	background: #2b2b2b;
-	border-radius: 8px;
-	padding: 10px;
-	margin-bottom: 10px;
+    background: #2b2b2b;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .spool-card strong {
-	font-size: 14px;
+    font-size: 14px;
 }
 
 .spool-card small {
-	color: #b5b5b5;
+    color: #b5b5b5;
 }
 
 .spool-card span {
-	color: #78d46a;
-	font-weight: bold;
-}
-
-.spoolwizard-sidebar button {
-	width: 100%;
+    color: #78d46a;
+    font-weight: bold;
 }
