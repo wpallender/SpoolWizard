@@ -1,4 +1,4 @@
-<div class="tab_plugin_spoolwizard">
+<div class="tab_plugin_spoolwizard" data-bind="visible: loginState.isUser()">
     <h1>SpoolWizard</h1>
     <p>Filament Inventory Manager</p>
 
@@ -31,30 +31,9 @@
 
     <hr>
     
-    <div class="spool-form">
-
-        <h3>Add New Spool</h3>
-
-        <label>Brand</label><br>
-        <input type="text" id="brand" maxlength="30" required><br><br>
-
-        <label>Material</label><br>
-        <input type="text" id="material" maxlength="30" required><br><br>
-
-        <label>Color</label><br>
-        <input type="text" id="color" maxlength="30" required><br><br>
-
-        <label>Total Weight (g)</label><br>
-        <input type="number" id="total_weight" min="1" step="1" required><br><br>
-
-        <label>Remaining Weight (g)</label><br>
-        <input type="number" id="remaining_weight" min="1" step="1" required><br><br>
-
-        <button id="save-spool" class="btn btn-primary">
-            Save Spool
-        </button>
-
-    </div>
+    <button id="add-spool" class="btn btn-primary">
+        + Add Spool
+    </button>
 
     <hr>
 
@@ -74,6 +53,35 @@
 
             </tbody>
         </table>
+    </div>
+    
+    <div id="spool-modal" class="modal hide fade" tabindex="-1">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 id="spool-modal-title">Add New Spool</h3>
+        </div>
+
+        <div class="modal-body">
+            <label>Brand</label><br>
+            <input type="text" id="brand" maxlength="30"><br><br>
+
+            <label>Material</label><br>
+            <input type="text" id="material" maxlength="30"><br><br>
+
+            <label>Color</label><br>
+            <input type="text" id="color" maxlength="30"><br><br>
+
+            <label>Total Weight (g)</label><br>
+            <input type="number" id="total_weight" min="1"><br><br>
+
+            <label>Remaining Weight (g)</label><br>
+            <input type="number" id="remaining_weight" min="1">
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Cancel</button>
+            <button id="save-spool" class="btn btn-primary">Save</button>
+        </div>
     </div>
     
     <div id="history-modal" class="modal hide fade" tabindex="-1">

@@ -90,6 +90,27 @@ $(function () {
                 $("#adjust-weight").val("");
                 $("#adjust-type").val("subtract");
             });
+            
+            //Add Spool
+            $("#add-spool").click(function () {
+                self.editingId = null;
+
+                $("#spool-modal-title").text("Add Spool");
+
+                $("#brand").val("");
+                $("#material").val("");
+                $("#color").val("");
+                $("#total_weight").val("");
+                $("#remaining_weight").val("");
+                self.editingId = null;
+
+                $("#save-spool")
+                    .text("Save Spool")
+                    .removeClass("btn-warning")
+                    .addClass("btn-primary");
+
+                $("#spool-modal").modal("show");
+            });
 
             // Save / Update spool
             $("#save-spool").click(function () {
@@ -177,6 +198,7 @@ $(function () {
                 })
                 .done(function () {
                     console.log("Inventory saved!");
+                    $("#spool-modal").modal("hide");
                 })
                 .fail(function (xhr) {
                     console.error("Failed to save inventory:", xhr);
@@ -231,6 +253,9 @@ $(function () {
                     .text("Update Spool")
                     .removeClass("btn-primary")
                     .addClass("btn-warning");
+                    
+                $("#spool-modal-title").text("Edit Spool");
+                $("#spool-modal").modal("show");
             });
 
             // Delete spool

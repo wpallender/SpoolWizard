@@ -30,10 +30,10 @@
 - [x] Display spool percentage remaining
 
 ### v0.2.x
-- [ ] Bug fixes
-- [ ] UI improvements
-- [ ] Performance improvements
-- [ ] Enable Jinja2 template autoescaping (OctoPrint 1.13 compatibility)
+- [x] Bug fixes
+- [x] UI improvements
+- [x] Performance improvements
+- [x] Enable Jinja2 template autoescaping (OctoPrint 1.13 compatibility)
 
 ---
 

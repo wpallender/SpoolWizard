@@ -3,7 +3,7 @@ from flask import jsonify
 
 import octoprint.plugin
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 # Remember to update changelog.md
 
 class SpoolwizardPlugin(
@@ -24,7 +24,6 @@ class SpoolwizardPlugin(
         return {
             "js": ["js/spoolwizard.js"],
             "css": ["css/spoolwizard.css"],
-            "less": ["less/spoolwizard.less"]
         }
     
     def on_api_get(self, request):
@@ -57,8 +56,6 @@ class SpoolwizardPlugin(
         return [
             dict(
                 type="tab",
-                custom_bindings=False,
-                custom_bindings_allow_inline=False
             )
         ]
 
@@ -84,17 +81,12 @@ __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 __plugin_implementation__ = None
 __plugin_hooks__ = {}
 
-__plugin_additional_environment = {
-    "jinja2": {
-        "autoescape": True
-    }
-}
-
 def __plugin_load__():
     global __plugin_implementation__
     __plugin_implementation__ = SpoolwizardPlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {
-        "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+        "octoprint.plugin.softwareupdate.check_config":
+            __plugin_implementation__.get_update_information
     }
